@@ -1,10 +1,24 @@
-version: '3.9'
+version: '3.8'
 
 services:
+  app:
+    image: tarunkumar573/contacts-app:latest
+    container_name: contacts-app
+    ports:
+      - "8501:8501"
+    environment:
+      # These should match what your app expects
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_DB=mydatabase
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+    depends_on:
+      - db
+
   db:
     image: postgres:15
-    container_name: pgdb
-    restart: always
+    container_name: postgres-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,34 +26,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-  streamlit:
-    build: ./app
-    container_name: streamlit_app
-    ports:
-      - "8501:8501"
-    environment:
-      - PG_HOST=db
-      - PG_PORT=5432
-      - PG_DB=mydatabase
-      - PG_USER=postgres
-      - PG_PASSWORD=postgres
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./app:/app
-    command: >
-      sh -c "echo 'Waiting for PostgreSQL...' &&
-             sleep 5 &&
-             echo 'Starting Streamlit...' &&
-             streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  postgres_data:
