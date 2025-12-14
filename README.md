@@ -2,7 +2,8 @@ Contacts Management App
 
 A modern, containerized contacts management application built with **Streamlit**, **PostgreSQL**, and **Docker**.
 
-<img width="1126" height="348" alt="image" src="https://github.com/user-attachments/assets/ceb80c7c-a257-44e1-ac6d-f892ea582843" />
+<img width="1102" height="342" alt="image" src="https://github.com/user-attachments/assets/c589e57e-6118-446a-8551-a370b406b480" />
+
 
  Features
 
